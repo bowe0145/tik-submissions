@@ -1,0 +1,11 @@
+{
+  "editor.formatOnSave": true,
+  "typescript.format.enable": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "typescript.validate.enable": true,
+  "editor.tabSize": 2,
+  "prettier.tabWidth": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true
+  }
+}

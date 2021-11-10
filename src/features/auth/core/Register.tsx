@@ -11,12 +11,10 @@ const Register = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
-  const [data, setData] = useState(null)
+  const [data, setData] = useState<any>(null)
   const [username, setUsername] = useState<any>(null)
 
   useEffect(() => {
-    // Setup a listener for this event Hub.dispatch('auth', { event: 'confirmSignUp', data: { response } })
     const updateConfirmStatus = async (action: any) => {
       // Check if the event is 'confirmSignUp'
       if (action?.payload?.event === 'confirmSignUp') {
@@ -35,7 +33,8 @@ const Register = () => {
           setUsername(null)
         } else {
           // Set the error to the response
-          setError(action.payload.data.response)
+          console.log(`error in updateConfirmStatsu`, action?.payload?.data?.response)
+          // setError(action.payload.data.response)
         }
       }
     }
@@ -43,13 +42,21 @@ const Register = () => {
     Hub.listen('auth', updateConfirmStatus)
 
     return () => Hub.remove('auth', updateConfirmStatus)
+    // eslint-disable-next-line
   }, [])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
     try {
-      const user = await register(email, password)
+      const user: any = await Auth.signUp({
+        username: email,
+        password,
+        attributes: {
+          email
+        }
+      })
       //   console.log(user)
+      console.log(`user before it`, user)
 
       if (user?.userConfirmed === false) {
         setData(user?.codeDeliveryDetails)
@@ -59,7 +66,8 @@ const Register = () => {
       setPassword('')
       setConfirmPassword('')
     } catch (err: any) {
-      setError(err.message)
+      console.log(`breaking error`, err)
+      // setError(err?.message ?? err)
     }
   }
 
@@ -94,7 +102,6 @@ const Register = () => {
       <Button color="teal.400" onClick={handleSubmit}>
         Register
       </Button>
-      {error && <Text>{error}</Text>}
     </Box>
   )
 }

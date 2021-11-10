@@ -1,9 +1,8 @@
-import { FormControl, FormLabel, Input, Switch, Text } from '@chakra-ui/react'
+import { FormControl, FormLabel, Input, Switch } from '@chakra-ui/react'
 import { useDateEditor } from '../context/DateEditorProvider'
 
 const DateInputForm = () => {
-  const { hours, isSickDay, isVacation, setHours, setIsVacation, setIsSickDay, date } =
-    useDateEditor()
+  const { hours, isSickDay, isVacation, setHours, setIsVacation, setIsSickDay } = useDateEditor()
 
   return (
     <FormControl display="flex" flexDir="column" alignItems="center">

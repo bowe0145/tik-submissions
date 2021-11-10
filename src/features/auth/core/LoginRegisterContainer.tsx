@@ -1,4 +1,3 @@
-import { useAuth } from '../context/AuthProvider'
 import { Tabs, TabList, TabPanels, Tab, TabPanel, Center } from '@chakra-ui/react'
 import Login from './Login'
 import Register from './Register'

@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { Auth, Hub } from 'aws-amplify'
 import { Profile } from '../../../model/Profile'
 
 type ProfileContextType = {
@@ -57,7 +56,7 @@ const ProfileProvider = ({ children }: { children: React.ReactNode }) => {
     console.log('Updating profile')
     try {
       setIsLoadingProfile(true)
-      const updatedProfile = await Profile.update(profile)
+      // const updatedProfile = await Profile.update(profile)
 
       const newProfile = await Profile.find()
       console.log(`getProfile in ProfileProvider`, newProfile)

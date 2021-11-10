@@ -1,19 +1,34 @@
-import { Box, Text, FormControl, FormLabel, Input, Button, Spacer } from '@chakra-ui/react'
-import { useState, FormEvent } from 'react'
+import { Box, FormControl, FormLabel, Input, Button, useToast } from '@chakra-ui/react'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthProvider'
-import { Hub } from 'aws-amplify'
 
 const Login = () => {
-  const { user, login, loading } = useAuth()
+  const { login, error, clearError } = useAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const toast = useToast()
+
+  useEffect(() => {}, [])
+
+  useEffect(() => {
+    if (error !== null && error !== undefined) {
+      toast({
+        title: 'Error',
+        description: error,
+        status: 'error',
+        duration: 5000,
+        isClosable: true
+      })
+      clearError()
+    }
+  }, [error, toast, clearError])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
 
     try {
       await login(email, password)
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
     }
   }
@@ -21,14 +36,19 @@ const Login = () => {
   return (
     <Box p={2}>
       <FormControl>
-        <FormLabel htmlFor="email">Email</FormLabel>
-        <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
+        <FormLabel htmlFor="email-login">Email</FormLabel>
+        <Input
+          id="email-login"
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
       </FormControl>
 
       <FormControl>
-        <FormLabel htmlFor="password">Password</FormLabel>
+        <FormLabel htmlFor="password-login">Password</FormLabel>
         <Input
-          id="password"
+          id="password-login"
           type="password"
           value={password}
           onChange={e => setPassword(e.target.value)}

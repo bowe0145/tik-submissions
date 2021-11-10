@@ -1,6 +1,5 @@
 import { Button, Text, FormControl, FormLabel, Box, HStack, Input } from '@chakra-ui/react'
-import { useState } from 'react'
-import { Auth } from 'aws-amplify'
+import { useEffect, useState } from 'react'
 import { useAuth } from '../context/AuthProvider'
 
 type VerifyEmailProps = {
@@ -16,9 +15,16 @@ const VerifyEmail = ({
   DeliveryMedium,
   Destination
 }: VerifyEmailProps) => {
-  const { confirmSignUp, loading } = useAuth()
+  const { confirmSignUp } = useAuth()
   const [verificationCode, setVerificationCode] = useState('')
-  const DidntReceiveMessage = `Didn't receive a code?`
+
+  useEffect(() => {
+    console.log('VerifyEmail')
+    console.log(username)
+    console.log(AttributeName)
+    console.log(DeliveryMedium)
+    console.log(Destination)
+  }, [AttributeName, DeliveryMedium, Destination, username])
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()

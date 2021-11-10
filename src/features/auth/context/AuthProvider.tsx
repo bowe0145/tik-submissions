@@ -1,6 +1,5 @@
 import { useContext, createContext, useState, useEffect } from 'react'
 import { Auth, Hub } from 'aws-amplify'
-import { useToast } from '@chakra-ui/toast'
 
 type AuthContextType = {
   user: any | null
@@ -12,6 +11,7 @@ type AuthContextType = {
   loading: boolean
 
   error: string | null
+  clearError: () => void
 }
 
 export const AuthContext = createContext<AuthContextType>({
@@ -21,7 +21,8 @@ export const AuthContext = createContext<AuthContextType>({
   register: async () => {},
   confirmSignUp: async () => {},
   loading: false,
-  error: null
+  error: null,
+  clearError: () => {}
 })
 
 export const useAuth = () => useContext(AuthContext)
@@ -30,7 +31,6 @@ const AuthProvider = ({ children }: any) => {
   const [user, setUser] = useState<any | null>(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState<any>(null)
-  const toast = useToast()
 
   useEffect(() => {
     // Get the current user
@@ -45,30 +45,27 @@ const AuthProvider = ({ children }: any) => {
 
     const AuthListener = async action => {
       const { event, data } = action.payload
+      console.log(action)
       switch (event) {
         //
         case 'signIn':
+          console.log(`received signIn`)
           setUser(data)
-          toast({
-            title: 'Successfully Logged In',
-            description: `You are now logged in.`,
-            position: 'bottom',
-            status: 'success',
-            variant: 'subtle'
-          })
           break
         case 'signOut':
           setUser(null)
           break
         case 'signUp':
+          console.log(action)
           // Not much to do here
           // GetUser()
           break
         case 'confirmSignUp':
+          console.log(action)
           // GetUser()
           break
         case 'signIn_failure':
-          setError(data)
+          setError(data.message)
           break
         case 'signUp_failure':
           setError(data)
@@ -86,11 +83,14 @@ const AuthProvider = ({ children }: any) => {
     return () => Hub.remove('auth', AuthListener)
   }, [])
 
+  const _clearError = () => {
+    setError(null)
+  }
+
   const login = async (email: string, password: string) => {
     try {
       setLoading(true)
-      const response = await Auth.signIn(email, password)
-      Hub.dispatch('auth', { event: 'signIn', data: { response } })
+      await Auth.signIn(email, password)
     } catch (e: any) {
       setError(e?.message)
     } finally {
@@ -102,12 +102,6 @@ const AuthProvider = ({ children }: any) => {
     try {
       setLoading(true)
       await Auth.signOut()
-      Hub.dispatch('auth', {
-        event: 'signOut',
-        data: {
-          message: 'User has been logged out'
-        }
-      })
     } catch (e: any) {
       setError(e?.message)
     } finally {
@@ -125,8 +119,6 @@ const AuthProvider = ({ children }: any) => {
           email
         }
       })
-      // Dispatch the register event in the Hub
-      Hub.dispatch('auth', { event: 'signUp', data: { user: response } })
 
       return response
     } catch (e: any) {
@@ -142,8 +134,6 @@ const AuthProvider = ({ children }: any) => {
 
     try {
       const response = await Auth.confirmSignUp(username, code)
-
-      Hub.dispatch('auth', { event: 'confirmSignUp', data: { response } })
 
       // SUCCESS
       return response
@@ -162,7 +152,8 @@ const AuthProvider = ({ children }: any) => {
         register,
         confirmSignUp,
         loading,
-        error
+        error,
+        clearError: _clearError
       }}
     >
       {children}

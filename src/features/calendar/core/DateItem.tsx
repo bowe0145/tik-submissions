@@ -1,17 +1,5 @@
 import { Box, Center, Text } from '@chakra-ui/react'
-import { useState } from 'react'
 import { ExtraDataType } from '../types'
-
-const Dot = () => (
-  <Box
-    w={2}
-    h={2}
-    border="1px"
-    borderColor="red.300"
-    backgroundColor="red.400"
-    borderRadius="full"
-  />
-)
 
 const DateItem = ({
   isSelected,
@@ -28,7 +16,6 @@ const DateItem = ({
   extraData?: ExtraDataType
   Container?: ({ date, value }) => JSX.Element
 }) => {
-  const [data, setData] = useState<ExtraDataType | null>(null)
   return (
     <Center
       background={isSelected ? 'whiteAlpha.300' : 'transparent'}

@@ -1,10 +1,12 @@
 import { Auth, Hub } from 'aws-amplify'
 import { Box, Button, Text, Stack } from '@chakra-ui/react'
 import { useState, useEffect } from 'react'
+import { useAuth } from '../context/AuthProvider'
 
 const AuthStatusBar = () => {
   // If the user is logged in, show the logout button
   const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const { logout } = useAuth()
 
   useEffect(() => {
     const AuthListener = async action => {
@@ -37,15 +39,7 @@ const AuthStatusBar = () => {
   }, [])
 
   const handleLogout = async () => {
-    await Auth.signOut()
-
-    // Update the Hub
-    Hub.dispatch('auth', {
-      event: 'signOut',
-      data: {
-        message: 'User has been signed out'
-      }
-    })
+    logout()
   }
 
   if (isLoggedIn) {

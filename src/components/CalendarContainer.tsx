@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react'
 import { Calendar, NavigationBar } from '../features/calendar'
 import { ExtraDataType } from '../features/calendar/types'
 import { useDates } from '../features/dates/context'
-import { Day } from '../model/Day'
 
 const ExtraDataContainer = ({ date, value }) => {
   // Check if the value is a number, or if its 'sick', or if its 'vacation'
@@ -15,7 +14,6 @@ const ExtraDataContainer = ({ date, value }) => {
     } else {
       return <Box />
     }
-    return <Box />
   } else if (value === 'sick') {
     return <Box bg="red.500" color="white" p="1" rounded="md"></Box>
   } else if (value === 'vacation') {
@@ -25,7 +23,7 @@ const ExtraDataContainer = ({ date, value }) => {
   }
 }
 
-type Day = {
+type DayType = {
   date: Date
   hours: number
   isVacation: boolean
@@ -39,7 +37,7 @@ const CalendarContainer = () => {
   useEffect(() => {
     // Map the dates to extra data
     if (dates && dates.EntityList && dates.EntityList.length > 0) {
-      const extraData = dates.EntityList.map((day: Day) => {
+      const extraData = dates.EntityList.map((day: DayType) => {
         if (day.hours > 0) {
           return {
             date: day.date,

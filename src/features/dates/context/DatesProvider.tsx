@@ -1,5 +1,5 @@
 import { createContext, FC, useContext, useEffect, useRef, useState } from 'react'
-import { Auth, Hub } from 'aws-amplify'
+import { Hub } from 'aws-amplify'
 import { Day } from '../../../model/Day'
 import { useAuth } from '../../auth/context/AuthProvider'
 
@@ -112,6 +112,7 @@ const DatesContextProvider: FC = props => {
     LoadAll()
 
     return () => clearInterval(dateFetchingInterval.current)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const _LoadAllDates = async () => {

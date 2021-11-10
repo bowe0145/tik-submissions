@@ -1,7 +1,6 @@
 import {
   Box,
   Button,
-  Text,
   FormControl,
   FormLabel,
   Input,
@@ -10,7 +9,6 @@ import {
   InputLeftElement
 } from '@chakra-ui/react'
 import { PhoneIcon, EmailIcon } from '@chakra-ui/icons'
-import { useProfile } from './context/ProfileProvider'
 import { useEffect, useState } from 'react'
 import { BeatLoader } from 'react-spinners'
 import { Auth } from 'aws-amplify'
@@ -23,6 +21,14 @@ const ProfileBox = () => {
   const [formEmail, setFormEmail] = useState('')
   const [formPhone, setFormPhone] = useState('')
   const [isLoading, setIsLoading] = useState(false)
+
+  useEffect(() => {
+    if (user) {
+      setFormFullName(user.attributes.name)
+      setFormEmail(user.attributes.email)
+      setFormPhone(user.attributes.phone_number)
+    }
+  }, [user])
 
   const handleSubmit = async () => {
     const userAttributes = {
@@ -41,18 +47,8 @@ const ProfileBox = () => {
     }
   }
 
-  const SubmitProfile = e => {
-    e.preventDefault()
-    // updateProfile({
-    //   fullName: formFullName,
-    //   email: formEmail,
-    //   phone: formPhone
-    // })
-  }
-
   return (
-    <Box width="xl" height="md">
-      <Text>Profile </Text>
+    <Box width="xl" height="md" display="flex" flexDir="column" gridGap={4}>
       <FormControl isRequired>
         <FormLabel htmlFor="fullName">Full Name</FormLabel>
         <InputGroup>
@@ -64,22 +60,7 @@ const ProfileBox = () => {
           />
         </InputGroup>
       </FormControl>
-      <FormControl isRequired>
-        <FormLabel htmlFor="email">Email</FormLabel>
-        <InputGroup>
-          <InputLeftAddon>
-            <InputLeftElement>
-              <EmailIcon />
-            </InputLeftElement>
-          </InputLeftAddon>
-          <Input
-            id="email"
-            value={formEmail}
-            onChange={e => setFormEmail(e.target.value)}
-            placeholder="Email"
-          />
-        </InputGroup>
-      </FormControl>
+
       <FormControl isRequired>
         <FormLabel htmlFor="phone">Phone</FormLabel>
         <InputGroup>
@@ -96,6 +77,24 @@ const ProfileBox = () => {
           />
         </InputGroup>
       </FormControl>
+      <FormControl>
+        <FormLabel htmlFor="email">Email</FormLabel>
+        <InputGroup>
+          <InputLeftAddon>
+            <InputLeftElement>
+              <EmailIcon />
+            </InputLeftElement>
+          </InputLeftAddon>
+          <Input
+            id="email"
+            value={formEmail}
+            onChange={e => setFormEmail(e.target.value)}
+            placeholder="Email"
+            disabled={true}
+          />
+        </InputGroup>
+      </FormControl>
+
       <Button
         isLoading={isLoading}
         spinner={<BeatLoader size={8} color="teal" />}
@@ -103,13 +102,6 @@ const ProfileBox = () => {
       >
         Submit
       </Button>
-      {user?.attributes?.email !== null &&
-      user?.attributes?.email !== undefined &&
-      user?.attributes?.email !== '' ? (
-        <Text>Email: {user?.attributes?.email}</Text>
-      ) : (
-        <Text>No email</Text>
-      )}
     </Box>
   )
 }

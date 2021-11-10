@@ -1,6 +1,5 @@
 import { ChevronLeftIcon, ChevronRightIcon } from '@chakra-ui/icons'
 import { Box, HStack } from '@chakra-ui/react'
-import { format } from 'date-fns'
 import { useCalendar } from './context/CalendarProvider'
 
 const ArrowRight = ({ onClick }) => (

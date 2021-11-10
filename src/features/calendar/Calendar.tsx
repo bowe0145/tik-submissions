@@ -13,8 +13,6 @@ import { useState, useEffect } from 'react'
 import { useCalendar } from './context/CalendarProvider'
 import WeekDayList from './core/WeekDayList'
 import DateItem from './core/DateItem'
-import NavigationBar from './NavigationBar'
-import ExtraData from './core/ExtraData'
 import { ExtraDataType } from './types'
 
 const Calendar = ({

@@ -1,6 +1,5 @@
 import { Box, Text, Button } from '@chakra-ui/react'
-import { useState, FormEvent, useEffect } from 'react'
-import { Auth, Hub } from 'aws-amplify'
+import { FormEvent } from 'react'
 import { useAuth } from '../context/AuthProvider'
 
 const Logout = () => {
@@ -8,7 +7,7 @@ const Logout = () => {
 
   const handleLogout = async (event: FormEvent) => {
     event.preventDefault()
-    await logout()
+    logout()
   }
 
   return (
