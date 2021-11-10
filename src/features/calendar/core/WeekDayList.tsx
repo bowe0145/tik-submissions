@@ -29,7 +29,7 @@ const WeekDayList = () => {
     <Grid templateColumns="repeat(7, minmax(0, 1fr))" templateRows="1fr" gap="2" textAlign="center">
       {weekDates.map((item: Date, idx: number) => {
         return (
-          <Text>
+          <Text key={`WeekDay-${idx}`}>
             <abbr title={item.toLocaleDateString(undefined, { weekday: 'long' })}>
               {item.toLocaleDateString(undefined, { weekday: 'short' })}
             </abbr>

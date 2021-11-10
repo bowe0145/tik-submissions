@@ -15,30 +15,9 @@ const Register = () => {
   const [data, setData] = useState(null)
   const [username, setUsername] = useState<any>(null)
 
-  /*
-  useEffect(() => {
-    const updateUser = async () => {
-      try {
-        const user = await Auth.currentAuthenticatedUser()
-        console.log(`updateUser`, user)
-        setUser(user)
-      } catch (e) {
-        console.log(e)
-      }
-    }
-
-    Hub.listen('auth', updateUser)
-
-    updateUser()
-
-    return () => Hub.remove('auth', updateUser)
-  }, [])
-*/
-
   useEffect(() => {
     // Setup a listener for this event Hub.dispatch('auth', { event: 'confirmSignUp', data: { response } })
     const updateConfirmStatus = async (action: any) => {
-      console.log(`in listener, data: `, data)
       // Check if the event is 'confirmSignUp'
       if (action?.payload?.event === 'confirmSignUp') {
         // Check if the response is successful
@@ -112,7 +91,7 @@ const Register = () => {
           onChange={e => setConfirmPassword(e.target.value)}
         />
       </FormControl>
-      <Button variantColor="teal" onClick={handleSubmit}>
+      <Button color="teal.400" onClick={handleSubmit}>
         Register
       </Button>
       {error && <Text>{error}</Text>}

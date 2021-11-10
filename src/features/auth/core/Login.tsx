@@ -1,4 +1,4 @@
-import { Box, Text, FormControl, FormLabel, Input, Button } from '@chakra-ui/react'
+import { Box, Text, FormControl, FormLabel, Input, Button, Spacer } from '@chakra-ui/react'
 import { useState, FormEvent } from 'react'
 import { useAuth } from '../context/AuthProvider'
 import { Hub } from 'aws-amplify'
@@ -13,14 +13,13 @@ const Login = () => {
 
     try {
       await login(email, password)
-      Hub.dispatch('auth', { event: 'signIn', data: user })
     } catch (error) {
       console.log(error)
     }
   }
 
   return (
-    <Box>
+    <Box p={2}>
       <FormControl>
         <FormLabel htmlFor="email">Email</FormLabel>
         <Input id="email" type="email" value={email} onChange={e => setEmail(e.target.value)} />
@@ -36,7 +35,9 @@ const Login = () => {
         />
       </FormControl>
 
-      <Button onClick={handleSubmit}>Submit</Button>
+      <Box p={2}>
+        <Button onClick={handleSubmit}>Submit</Button>
+      </Box>
     </Box>
   )
 }

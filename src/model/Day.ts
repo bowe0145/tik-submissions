@@ -16,7 +16,10 @@ export const Day = {
 
     return days
   },
-  update: async (day: Day) => {
+  update: async (day: any) => {
+    const response = await Post.post(day)
+
+    return response
     // Post a new day/update a day
   },
   submit: async (day: Day, params: any) => {

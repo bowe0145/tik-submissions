@@ -1,6 +1,7 @@
 import { createContext, FC, useContext, useEffect, useRef, useState } from 'react'
-import { Auth } from 'aws-amplify'
+import { Auth, Hub } from 'aws-amplify'
 import { Day } from '../../../model/Day'
+import { useAuth } from '../../auth/context/AuthProvider'
 
 type EntityAdapter = {
   EntityList: any[]
@@ -36,6 +37,8 @@ export const DatesContext = createContext<DatesContextType>({
 export const useDates = () => useContext(DatesContext)
 
 const DatesContextProvider: FC = props => {
+  const { user } = useAuth()
+
   const [dates, setDates] = useState<EntityAdapter>({
     EntityList: [],
     EntityIds: []
@@ -46,36 +49,67 @@ const DatesContextProvider: FC = props => {
 
   const dateFetchingInterval = useRef<any>(null)
 
-  // Use Day.findAll() to fetch all dates when the component mounts
+  // Listen for changes in Hub and fetch dates
   useEffect(() => {
-    setIsLoadingAllDates(true)
-    Day.findAll()
-      .then(dates => {
+    const userListener = async () => {
+      try {
+        // if (user) {
+        // Use Day.findAll to fetch all dates
+        setIsLoadingAllDates(true)
+        const dates = await Day.findAll()
         setDates({
           EntityList: dates,
           EntityIds: dates.map(date => date.id)
         })
         setIsLoadingAllDates(false)
-      })
-      .catch(err => {
-        console.log(err)
-        setIsLoadingAllDates(false)
-      })
+        // }
+      } catch (e) {
+        console.log(e)
+      }
+    }
+
+    Hub.listen('auth', userListener)
+
+    userListener()
+
+    return () => Hub.remove('auth', userListener)
   }, [])
 
   // Use Day.findAll() to fetch all dates every 10 seconds in a useEffect
   useEffect(() => {
     dateFetchingInterval.current = setInterval(() => {
-      console.log(`fetching all Days`)
+      console.log('Should fetch if user isnt null', user)
+      // if (user) {
+      setIsLoadingAllDates(true)
       Day.findAll()
         .then(dates => {
           setDates({
             EntityList: dates,
             EntityIds: dates.map(date => date.id)
           })
+          setIsLoadingAllDates(false)
         })
-        .catch(err => console.log(err))
-    }, 10000)
+        .catch(err => {
+          console.log(err)
+          setIsLoadingAllDates(false)
+        })
+      // }
+    }, 1000000)
+
+    const LoadAll = async () => {
+      if (user) {
+        Day.findAll()
+          .then(dates => {
+            setDates({
+              EntityList: dates,
+              EntityIds: dates.map(date => date.id)
+            })
+          })
+          .catch(err => console.log(err))
+      }
+    }
+
+    LoadAll()
 
     return () => clearInterval(dateFetchingInterval.current)
   }, [])
@@ -91,20 +125,25 @@ const DatesContextProvider: FC = props => {
     })
   }
 
-  const _UpdateDate = (date: any) => {
+  const _UpdateDate = async (date: any) => {
     setIsLoadingUpdateDate(true)
-    Day.update(date)
-      .then(() => {
-        Day.findAll()
-          .then(dates => {
-            setDates({
-              EntityList: dates,
-              EntityIds: dates.map(date => date.id)
-            })
-          })
-          .catch(err => console.log(err))
-      })
-      .catch(err => console.log(err))
+
+    // Use the Day model to update the date
+    const response = await Day.update(date)
+
+    // If there response has an id, then the date was updated
+    if (response && response.id) {
+      // Fetch the date from the database
+      // const updatedDate = await Day.findById(response.id)
+
+      // // Update the date in the state
+      // setDates({
+      //   EntityList: [...dates.EntityList, updatedDate],
+      //   EntityIds: [...dates.EntityIds, updatedDate.id]
+
+      // Fetch all dates to update the state
+      _LoadAllDates()
+    }
 
     setIsLoadingUpdateDate(false)
   }

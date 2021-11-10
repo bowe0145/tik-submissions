@@ -17,6 +17,7 @@ import { useEffect, useState } from 'react'
 import { Auth } from 'aws-amplify'
 import { DateEditorForm } from './core'
 import { useDateEditor } from './context/DateEditorProvider'
+import { Day } from '../../model/Day'
 
 const DateEditor = () => {
   const { calendarDate, NextDate, selectedDate, SelectDate } = useCalendar()
@@ -34,41 +35,49 @@ const DateEditor = () => {
   const SubmitDay = async () => {
     setIsSubmitting(true)
     // Get the user's token from aws-amplify
-    const token = await Auth.currentSession()
-    console.log(token.getIdToken().getJwtToken())
+    // const token = await Auth.currentSession()
+    // console.log(token.getIdToken().getJwtToken())
 
-    const url = 'https://pzm80umfn2.execute-api.us-east-1.amazonaws.com/dev/days'
-    const method = 'POST'
+    // const url = 'https://pzm80umfn2.execute-api.us-east-1.amazonaws.com/dev/days'
+    // const method = 'POST'
 
-    // Create the body of the request
-    const body = {
+    // // Create the body of the request
+    // const body = {
+    //   date: selectedDate,
+    //   hours: hours,
+    //   isSick: isSickDay,
+    //   isVacation: isVacation,
+    //   notes: '',
+    //   submission: ''
+    // }
+
+    // // Create the headers of the request with the token in the Authorization header
+    // const headers = {
+    //   'Content-Type': 'application/json',
+    //   Authorization: `${token.getIdToken().getJwtToken()}`
+    // }
+
+    // // Send the request
+    // const response = await fetch(url, {
+    //   method: method,
+    //   headers: headers,
+    //   body: JSON.stringify(body)
+    // })
+
+    // // Get the response
+    // const data = await response.json()
+
+    const response = await Day.update({
       date: selectedDate,
       hours: hours,
       isSick: isSickDay,
       isVacation: isVacation,
       notes: '',
       submission: ''
-    }
-
-    // Create the headers of the request with the token in the Authorization header
-    const headers = {
-      'Content-Type': 'application/json',
-      Authorization: `${token.getIdToken().getJwtToken()}`
-    }
-
-    // Send the request
-    const response = await fetch(url, {
-      method: method,
-      headers: headers,
-      body: JSON.stringify(body)
     })
-
-    // Get the response
-    const data = await response.json()
-
+    console.log(`response in submit`, response)
     // Check if the response was successful
-    if (response.ok) {
-      console.log(data)
+    if (response?.id) {
       toast({
         title: 'Date submitted',
         description: `Your date has been submitted.
@@ -78,7 +87,7 @@ const DateEditor = () => {
         variant: 'subtle'
       })
     } else {
-      console.log(data)
+      console.log(response)
     }
 
     setIsSubmitting(false)
@@ -158,7 +167,7 @@ const DateEditor = () => {
     <Center>
       <Box border="1px" borderRadius="md" width="sm">
         <Text>{selectedDate?.toLocaleDateString()}</Text>
-        <Box
+        {/* <Box
           backgroundColor="whiteAlpha.400"
           display="flex"
           flexDir="column"
@@ -175,7 +184,7 @@ const DateEditor = () => {
           <Button variant="outline" onClick={GetSpecificDate}>
             Get Specific Date
           </Button>
-        </Box>
+        </Box> */}
 
         <DateEditorForm />
 

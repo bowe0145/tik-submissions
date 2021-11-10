@@ -11,6 +11,7 @@ import CalendarProvider from './features/calendar/context/CalendarProvider'
 import DateEditorProvider from './features/date-editor/context/DateEditorProvider'
 import DatesProvider from './features/dates/context'
 import AuthProvider from './features/auth/context/AuthProvider'
+import ProfileProvider from './features/profile/context/ProfileProvider'
 
 Amplify.configure(config)
 
@@ -18,13 +19,15 @@ ReactDOM.render(
   <React.StrictMode>
     <ChakraProvider theme={theme}>
       <AuthProvider>
-        <DatesProvider>
-          <CalendarProvider>
-            <DateEditorProvider>
-              <App />
-            </DateEditorProvider>
-          </CalendarProvider>
-        </DatesProvider>
+        <ProfileProvider>
+          <DatesProvider>
+            <CalendarProvider>
+              <DateEditorProvider>
+                <App />
+              </DateEditorProvider>
+            </CalendarProvider>
+          </DatesProvider>
+        </ProfileProvider>
       </AuthProvider>
     </ChakraProvider>
   </React.StrictMode>,
