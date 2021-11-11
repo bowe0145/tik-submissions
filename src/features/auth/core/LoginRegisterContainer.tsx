@@ -1,4 +1,4 @@
-import { Tabs, TabList, TabPanels, Tab, TabPanel, Center } from '@chakra-ui/react'
+import { Tabs, TabList, TabPanels, Tab, TabPanel, Center, Box } from '@chakra-ui/react'
 import Login from './Login'
 import Register from './Register'
 import { useState, useEffect } from 'react'
@@ -32,7 +32,7 @@ const LoginRegisterContainer = () => {
   }, [])
 
   return (
-    <Center>
+    <Box display="flex" justifyContent="flex-start">
       <Tabs index={tabIndex} onChange={handleTabChange} isFitted>
         <TabList>
           <Tab>Login</Tab>
@@ -47,7 +47,7 @@ const LoginRegisterContainer = () => {
           </TabPanel>
         </TabPanels>
       </Tabs>
-    </Center>
+    </Box>
   )
 }
 

@@ -7,9 +7,9 @@ const LoginContainer = () => {
   const { user } = useAuth()
 
   return (
-    <Center>
+    <Box>
       <Box width="md">{user !== null ? <Logout /> : <LoginRegisterContainer />}</Box>
-    </Center>
+    </Box>
   )
 }
 

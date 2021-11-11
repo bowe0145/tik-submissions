@@ -1,4 +1,4 @@
-import { createContext, useState, FC, useContext } from 'react'
+import { createContext, useState, FC, useContext, useEffect } from 'react'
 
 type DateEditorContextType = {
   date: Date | null
@@ -20,7 +20,7 @@ type DateEditorContextType = {
   setIsVacation: (isVacation: boolean) => void
 
   hours: number
-  setHours: (hours: number) => void
+  setHours: (hours: string) => void
 
   notes: string
   setNotes: (notes: string) => void
@@ -63,6 +63,22 @@ const DateEditorProvider: FC = ({ children }) => {
   const [isVacation, setIsVacation] = useState<boolean>(false)
   const [hours, setHours] = useState<number>(0)
   const [notes, setNotes] = useState<string>('')
+
+  useEffect(() => {
+    console.log(`isSickDay`, isSickDay)
+  }, [isSickDay])
+
+  useEffect(() => {
+    console.log(`isVacation`, isVacation)
+  }, [isVacation])
+
+  useEffect(() => {
+    console.log(`isWorkDay`, isWorkDay)
+  }, [isWorkDay])
+
+  useEffect(() => {
+    console.log(`hours`, hours)
+  }, [hours])
 
   const _setDate = (date: Date | null) => {
     setDate(date)
@@ -127,13 +143,17 @@ const DateEditorProvider: FC = ({ children }) => {
     }
   }
 
-  const _setHours = (hours: number) => {
-    setHours(hours)
-
-    if (hours === 0) {
-      setIsWorkDay(false)
+  const _setHours = (hours: string) => {
+    if (isNaN(Number(hours))) {
+      setHours(0)
+      _setIsWorkDay(false)
     } else {
-      setIsWorkDay(true)
+      setHours(Number(hours))
+      if (+hours === 0) {
+        _setIsWorkDay(false)
+      } else {
+        _setIsWorkDay(true)
+      }
     }
   }
 

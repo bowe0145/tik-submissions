@@ -1,23 +1,20 @@
-import { Center, Stack } from '@chakra-ui/react'
+import { Stack, Box } from '@chakra-ui/react'
 import CalendarContainer from '../components/CalendarContainer'
-import { useAuth } from '../features/auth/context/AuthProvider'
-import LoginContainer from '../features/auth/LoginContainer'
 import DateEditor from '../features/date-editor/DateEditor'
 
 const Home = () => {
-  const { user } = useAuth()
   return (
-    <Center>
-      {user !== null && user !== undefined ? (
-        <Stack>
-          {/* <ProfileBox /> */}
-          <CalendarContainer />
-          <DateEditor />
-        </Stack>
-      ) : (
-        <LoginContainer />
-      )}
-    </Center>
+    <Box
+      display="flex"
+      flexDir="column"
+      justifyContent="center"
+      alignItems="center"
+      gridGap={4}
+      width="container.lg"
+    >
+      <CalendarContainer />
+      <DateEditor />
+    </Box>
   )
 }
 

@@ -13,7 +13,7 @@ const NavBar = () => {
       justifyContent="center"
       alignContent="center"
       spacing={4}
-      borderBottomColor="teal.800"
+      borderBottomColor="blue.200"
       borderBottomWidth="thin"
       p="2"
     >

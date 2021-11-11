@@ -9,7 +9,14 @@ function App() {
       <header>
         <NavBar />
       </header>
-      <Box p={4} display="flex" flexDir="row" justifyContent="center" alignContent="center">
+      <Box
+        paddingTop={4}
+        paddingBottom={4}
+        display="flex"
+        flexDir="row"
+        justifyContent="center"
+        alignContent="center"
+      >
         <RouterController />
       </Box>
     </div>
