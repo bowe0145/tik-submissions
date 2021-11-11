@@ -17,6 +17,7 @@ export const Day = {
     return days
   },
   update: async (day: any) => {
+    console.log(`update body`, day)
     const response = await Post.post(day)
 
     return response

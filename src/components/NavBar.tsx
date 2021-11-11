@@ -12,8 +12,9 @@ const NavBar = () => {
       templateColumns="repeat(10, 1fr)"
       justifyContent="center"
       alignContent="center"
+      textAlign="center"
       spacing={4}
-      borderBottomColor="blue.200"
+      borderBottomColor="tik.200"
       borderBottomWidth="thin"
       p="2"
     >
@@ -33,13 +34,13 @@ const NavBar = () => {
       <GridItem
         display="flex"
         flexDir="row"
-        justifyContent="flex-start"
+        justifyContent="center"
         gridGap="2"
         alignContent="center"
         alignItems="flex-end"
         rowStart={1}
         colSpan={5}
-        colStart={4}
+        colStart={3}
       >
         <RouterLink to="/">
           <Button

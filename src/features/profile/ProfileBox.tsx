@@ -48,7 +48,14 @@ const ProfileBox = () => {
   }
 
   return (
-    <Box width="xl" height="md" display="flex" flexDir="column" gridGap={4}>
+    <Box
+      width={['container.sm', 'container.md']}
+      height="md"
+      display="flex"
+      flexDir="column"
+      gridGap={4}
+      padding="2"
+    >
       <FormControl isRequired>
         <FormLabel htmlFor="fullName">Full Name</FormLabel>
         <InputGroup>

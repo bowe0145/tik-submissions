@@ -34,7 +34,7 @@ const Login = () => {
   }
 
   return (
-    <Box p={2}>
+    <Box display="flex" flexDir="column" justifyContent="center" alignContent="center" gridGap={4}>
       <FormControl>
         <FormLabel htmlFor="email-login">Email</FormLabel>
         <Input
@@ -55,9 +55,7 @@ const Login = () => {
         />
       </FormControl>
 
-      <Box p={2}>
-        <Button onClick={handleSubmit}>Submit</Button>
-      </Box>
+      <Button onClick={handleSubmit}>Submit</Button>
     </Box>
   )
 }

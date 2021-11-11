@@ -10,7 +10,8 @@ const Home = () => {
       justifyContent="center"
       alignItems="center"
       gridGap={4}
-      width="container.lg"
+      m={1}
+      width={['xs', 'container.sm']}
     >
       <CalendarContainer />
       <DateEditor />

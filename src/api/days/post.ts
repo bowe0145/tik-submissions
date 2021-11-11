@@ -12,6 +12,8 @@ export const post = async (body: any) => {
     'Content-Type': 'application/json'
   }
 
+  console.log(`post body`, body)
+
   const response = await fetch(url, {
     method,
     headers,

@@ -76,7 +76,7 @@ const Register = () => {
   }
 
   return (
-    <Box>
+    <Box display="flex" flexDir="column" justifyContent="center" alignContent="center" gridGap={4}>
       <FormControl>
         <FormLabel htmlFor="email">Email</FormLabel>
         <Input type="email" id="email" value={email} onChange={e => setEmail(e.target.value)} />
@@ -99,9 +99,7 @@ const Register = () => {
           onChange={e => setConfirmPassword(e.target.value)}
         />
       </FormControl>
-      <Button color="teal.400" onClick={handleSubmit}>
-        Register
-      </Button>
+      <Button onClick={handleSubmit}>Register</Button>
     </Box>
   )
 }

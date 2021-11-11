@@ -68,7 +68,13 @@ const CalendarContainer = () => {
   }, [dates])
 
   return (
-    <Box border="1px" borderRadius="md" p="1" maxW="container.sm" backgroundColor="blackAlpha.400">
+    <Box
+      backgroundColor="blackAlpha.400"
+      border="1px"
+      borderRadius="md"
+      borderColor="tik.200"
+      width="100%"
+    >
       <NavigationBar />
       <Calendar extraData={days} extraDataContainer={ExtraDataContainer} />
     </Box>

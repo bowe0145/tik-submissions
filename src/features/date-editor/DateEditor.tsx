@@ -37,6 +37,9 @@ const DateEditor = () => {
   const SubmitDay = async () => {
     setIsSubmitting(true)
 
+    console.log(`isVacation`, isVacation)
+    console.log(`isSick`, isSickDay)
+
     const response = await Day.update({
       date: selectedDate,
       hours: hours,
@@ -45,6 +48,7 @@ const DateEditor = () => {
       notes: '',
       submission: ''
     })
+
     console.log(`response in submit`, response)
     // Check if the response was successful
     if (response?.id) {
@@ -81,7 +85,8 @@ const DateEditor = () => {
     <Box
       border="1px"
       borderRadius="md"
-      maxW="container.sm"
+      borderColor="tik.200"
+      w="100%"
       backgroundColor="blackAlpha.400"
       display="flex"
       flexDir="column"

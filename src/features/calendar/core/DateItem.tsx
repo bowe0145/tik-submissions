@@ -23,7 +23,7 @@ const DateItem = ({
       onClick={() => onSelect(date)}
       flexDir="column"
     >
-      <Text color={isInMonth ? 'blue.50' : 'blue.700'}>{date.getDate()}</Text>
+      <Text color={isInMonth ? 'tik.50' : 'tik.600'}>{date.getDate()}</Text>
       {extraData !== null && extraData !== undefined ? (
         <Box>
           {Container !== null && Container !== undefined ? <Container {...extraData} /> : null}
